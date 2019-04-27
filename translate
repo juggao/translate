@@ -43,10 +43,7 @@ def main():
 			print "?"
 			continue
 		for s in T:		
-	    		if len(s.text):
-				print colored(s.text, 'red')
-			else:
-				print "?"
+	    		print colored(s.text, 'red')
 
 				
 if __name__ == "__main__":
