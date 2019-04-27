@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+
+# translate: google translation from the commandline
+# AO-2019
+#
+# INSTALL : pip install googletrans
+#           pip install termcolor
+#           cp translate ~/bin (or a location in your $PATH)
+#           chmod u+x translate
+#
+import sys
+import os
+from termcolor import colored
+from googletrans import Translator
+
+def main():
+	argc = len(sys.argv)
+	if argc == 1:
+		print "translate \"Some text\" <dest>"
+		return
+	langcodes = sys.argv[2:argc]
+	if len(langcodes) == 0:
+		langcodes='nl'
+	translator = Translator()
+	for langc in langcodes:
+		try: 
+			T = translator.translate(sys.argv[1], dest=langc)
+		except ValueError:
+			print "?"
+			continue
+		if len(T.text):
+			print colored(T.text, 'red')
+		else:
+			print "?"
+
+				
+if __name__ == "__main__":
+	main()
+	
