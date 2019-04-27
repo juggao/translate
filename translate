@@ -13,7 +13,7 @@
 import sys
 import os
 from termcolor import colored
-from googletrans import Translator
+import googletrans
 
 def read_in():
     lines=['']
@@ -26,16 +26,33 @@ def read_in():
 def main():
 	argc = len(sys.argv)
 	if argc == 1:
-		print "translate \"Some text\" (or - for stdin)  <dest>"
+		print "translate \"Some text\" <dest>..."
+		print "translate -" 
+		print "translate --langcodes"
+		print "translate \"Some text\" --detect "
 		return
 	langcodes = sys.argv[2:argc]
+	detect = 0
+	if "--langcodes" in sys.argv:
+		for i in googletrans.LANGUAGES:
+			print i+":" + googletrans.LANGUAGES[i]
+		return
+	if "--detect" in langcodes:
+		detect = 1
+		n = langcodes.index('--detect')
+		langcodes.pop(n)
 	if len(langcodes) == 0:
 		langcodes=['nl']
 	if sys.argv[1] == '-':
 		lines = read_in()
 	else:
 		lines = [sys.argv[1]]
-	translator = Translator()
+	translator = googletrans.Translator()
+	if detect:
+		langs = translator.detect(lines)
+		for lang in langs:
+			print(lang.lang, lang.confidence)
+		return
 	for langc in langcodes:
 		try: 
 			T = translator.translate(lines, dest=langc)
