@@ -21,10 +21,7 @@ def read_in():
     	lines = sys.stdin.readlines()
     except KeyboardInterrupt:
 	pass
-    s = ""
-    for i in range(len(lines)):
-        s =  s + lines[i]
-    return s
+    return lines
 
 def main():
 	argc = len(sys.argv)
@@ -37,7 +34,7 @@ def main():
 	if sys.argv[1] == '-':
 		lines = read_in()
 	else:
-		lines = sys.argv[1]
+		lines = [sys.argv[1]]
 	translator = Translator()
 	for langc in langcodes:
 		try: 
@@ -45,10 +42,11 @@ def main():
 		except ValueError:
 			print "?"
 			continue
-		if len(T.text):
-			print colored(T.text, 'red')
-		else:
-			print "?"
+		for s in T:		
+	    		if len(s.text):
+				print colored(s.text, 'red')
+			else:
+				print "?"
 
 				
 if __name__ == "__main__":
